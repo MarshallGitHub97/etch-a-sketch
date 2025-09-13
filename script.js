@@ -1,26 +1,48 @@
+const DEFAULT_GRID_SIZE = 16;
 
 const container = document.querySelector(".container");
-let gridSize = 16;
+const clearBtn = document.querySelector(".clear-all")
+const sizeValue = document.querySelector(".grid-size")
 
-for(let i = 0; i < gridSize * gridSize; i++){
-    const newDiv = document.createElement("div");
-    newDiv.classList = "squareDiv";
-    container.appendChild(newDiv);
-}
+clearBtn.onclick = () => {
+        document.querySelectorAll(".squareDiv").forEach((div) => {
+        div.style.background = clearAllColor();
+    });
+};
+sizeValue.oninput = (e) => setGridSize(e.target.value);
 
-document.querySelector("button").addEventListener("click", () => {
-    gridSize = prompt("What Grid Size do you want to Choose ?");
-    gridSize = Number(gridSize);
+setGridSize(DEFAULT_GRID_SIZE);
+
+function setGridSize(gridSize){
 
     while (container.hasChildNodes()) {
-        container.removeChild(container.firstChild);
+        container.removeChild(container.firstChild); 
     }
 
-    for(let i = 0; i < gridSize*gridSize; i++){
-    const newDiv = document.createElement("div");
-    newDiv.classList = "squareDiv";
-    let newWidth = 100 / gridSize ; 
-    newDiv.style.width = newWidth + "%";
-    container.appendChild(newDiv);
+    for(let i = 0; i < gridSize * gridSize; i++){
+        const newDiv = document.createElement("div");
+        newDiv.classList = "squareDiv";
+        let newWidth = 100 / gridSize ; 
+        newDiv.style.width = newWidth + "%";
+
+        newDiv.addEventListener("mouseover", () => {
+            newDiv.style.background = setRandomRGBColor();
+        });
+
+        container.appendChild(newDiv);
+    }
+};
+
+function setRandomRGBColor() {
+    let randomRed = Math.floor(Math.random() * 255);
+    let randomBlue =  Math.floor(Math.random() * 255);
+    let randomGreen = Math.floor(Math.random() * 255);
+    return `rgb(${randomRed}, ${randomBlue}, ${randomGreen})`
 }
-})
+
+function clearAllColor() {
+    let randomRed = 255;
+    let randomBlue =  255;
+    let randomGreen = 255;
+    return `rgb(${randomRed}, ${randomBlue}, ${randomGreen})`
+}
